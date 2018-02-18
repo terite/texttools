@@ -59,6 +59,10 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
             item.innerText = opName;
             item.classList.add('item');
             item.opFn = opFn;
+            item.addEventListener('click', function () {
+                closePane();
+                runOperation(this.opFn);
+            });
             pane.appendChild(item);
         }
         pane.firstChild.classList.add('selected');
