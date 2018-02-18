@@ -14,6 +14,8 @@ const operations = [
         let bits = sjcl.hash.sha256.hash(input);
         return sjcl.codec.hex.fromBits(bits);
     }],
+    ['URI Encode', encodeURIComponent],
+    ['URI Decode', decodeURIComponent],
 ];
 
 document.addEventListener("DOMContentLoaded", function domLoaded(event) {
