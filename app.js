@@ -1,9 +1,11 @@
+'use strict';
+
 const operations = [
-    ['Base64 encode', function base64encode(input) {
+    ['Base64 Encode', function base64encode(input) {
         const bits = sjcl.codec.utf8String.toBits(input);
         return sjcl.codec.base64.fromBits(bits);
     }],
-    ['Base64 decode', function base64decode(input) {
+    ['Base64 Decode', function base64decode(input) {
         const bits = sjcl.codec.base64.toBits(input);
         return sjcl.codec.utf8String.fromBits(bits);
     }],
