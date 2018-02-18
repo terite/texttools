@@ -21,8 +21,10 @@ const operations = [
 ];
 
 document.addEventListener("DOMContentLoaded", function domLoaded(event) {
-    const textarea = document.getElementById('content');
-    const pane = document.getElementById('pane');
+    const textarea = document.querySelector('#content');
+    const pane = document.querySelector('#pane');
+    const paneList = document.querySelector('#pane-list');
+    const paneFilter = document.querySelector('#pane-filter');
 
     function runOperation(fn) {
         const start = textarea.selectionStart;
@@ -42,7 +44,12 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
 
     function openPane() {
         pane.classList.remove('hidden');
-        initializePane();
+        for (let child of paneList.children) {
+            child.classList.remove('selected');
+            child.classList.remove('hidden');
+        }
+        paneList.firstChild.classList.add('selected');
+        paneFilter.focus()
     }
     function closePane() {
         pane.classList.add('hidden');
@@ -63,11 +70,7 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
     }
 
     function initializePane() {
-        while (pane.firstChild) {
-            pane.removeChild(pane.firstChild);
-        }
-
-        pane.innerHTML = '';
+        let opName, opFn;
         for ([opName, opFn] of operations) {
             let item = document.createElement('div');
             item.innerText = opName;
@@ -77,10 +80,8 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
                 closePane();
                 runOperation(this.opFn);
             });
-            pane.appendChild(item);
+            paneList.appendChild(item);
         }
-        pane.firstChild.classList.add('selected');
-        pane.focus();
     }
 
     function paneKeyListener(event) {
@@ -93,25 +94,61 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
         }
 
         const selected = document.querySelector('.item.selected');
+        const selectable = document.querySelectorAll('.item:not(.hidden)');
+
+        if (!selectable.length) {
+            return;
+        }
+
+        const index = Array.prototype.indexOf.call(selectable, selected);
+        const next = selectable[(selectable.length + index + 1) % selectable.length]
+        const previous = selectable[(selectable.length + index - 1) % selectable.length]
 
         if (event.key == "ArrowDown") {
             event.preventDefault();
-            const toSelect = selected.nextSibling || pane.firstChild;
+            const toSelect = next;
             selected.classList.remove('selected');
             toSelect.classList.add('selected');
+            toSelect.scrollIntoView(false);
         } else if (event.key == "ArrowUp") {
             event.preventDefault();
-            const toSelect = selected.previousSibling || pane.lastChild;
+            const toSelect = previous;
             selected.classList.remove('selected');
             toSelect.classList.add('selected');
+            toSelect.scrollIntoView(false);
         } else if (event.key == "Enter") {
             event.preventDefault();
+            paneFilter.value = '';
             closePane();
             runOperation(selected.opFn);
         }
     }
 
+    function paneFilterHandler(event) {
+        const search = paneFilter.value.toLowerCase();
+
+        // hide all non-matching items
+        for (let child of paneList.children) {
+            if (child.innerText.toLowerCase().indexOf(search) >= 0) {
+                child.classList.remove('hidden');
+            } else {
+                child.classList.add('hidden');
+                child.classList.remove('selected');
+            }
+        }
+        // if there are no selected items, select the first visible one
+        const selected = document.querySelector('.item.selected');
+        if (!selected) {
+            const toSelect = document.querySelector('.item:not(.hidden)');
+            if (toSelect) {
+                toSelect.classList.add('selected');
+            }
+        }
+    }
+
     textarea.addEventListener('keydown', ctrlPListener);
     document.body.addEventListener('keydown', paneKeyListener);
+    paneFilter.addEventListener('input', paneFilterHandler);
+    initializePane();
     textarea.focus()
 });
