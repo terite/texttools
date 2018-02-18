@@ -1,8 +1,18 @@
 const operations = [
-    ['Base64 encode', btoa],
-    ['Base64 decode', atob],
+    ['Base64 encode', function base64encode(input) {
+        const bits = sjcl.codec.utf8String.toBits(input);
+        return sjcl.codec.base64.fromBits(bits);
+    }],
+    ['Base64 decode', function base64decode(input) {
+        const bits = sjcl.codec.base64.toBits(input);
+        return sjcl.codec.utf8String.fromBits(bits);
+    }],
     ['Format JSON', function formatJSON(input) {
         return JSON.stringify(JSON.parse(input), null, 4);
+    }],
+    ['SHA256', function (input) {
+        let bits = sjcl.hash.sha256.hash(input);
+        return sjcl.codec.hex.fromBits(bits);
     }],
 ];
 
