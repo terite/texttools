@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
                 textarea.value = fn(textarea.value);
             } else {
                 const selected = textarea.value.slice(start, end);
-                textarea.setRangeText(fn(selected));
+                document.execCommand("insertText", false, fn(selected));
+
             }
         } catch (error) {
             alert(error)
