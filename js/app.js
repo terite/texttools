@@ -42,7 +42,9 @@ document.addEventListener("DOMContentLoaded", function domLoaded() {
 
         try {
             if (start == end) {
-                textarea.value = fn(textarea.value);
+                const selected = textarea.value;
+                document.execCommand("selectAll", false, null);
+                document.execCommand("insertText", false, fn(selected));
             } else {
                 const selected = textarea.value.slice(start, end);
                 document.execCommand("insertText", false, fn(selected));
