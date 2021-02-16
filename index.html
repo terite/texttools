@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <textarea id="content"></textarea>
-    <div id="pane" class="hidden">
+    <textarea id="content">
+Press CTRL+P to open the command palette
+    </textarea>
+    <div id="pane" class="hidden palette">
         <input id="pane-filter">
-        <div id="pane-list"></div>
+        <div id="pane-list" class="palette-list"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.7/sjcl.min.js"></script>
     <script src="app.js"></script>

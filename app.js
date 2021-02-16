@@ -26,11 +26,11 @@ const operations = [
     }],
 ];
 
-document.addEventListener("DOMContentLoaded", function domLoaded(event) {
+document.addEventListener("DOMContentLoaded", function domLoaded() {
     const textarea = document.querySelector('#content');
     const pane = document.querySelector('#pane');
     const paneList = document.querySelector('#pane-list');
-    const paneFilter = document.querySelector('#pane-filter');
+    const paneFilter = document.querySelector('#pane > input');
 
     function runOperation(fn) {
         const start = textarea.selectionStart;
@@ -50,12 +50,12 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
     }
 
     function openPane() {
-        pane.classList.remove('hidden');
-        for (let child of paneList.children) {
+        for (const child of paneList.children) {
             child.classList.remove('selected');
             child.classList.remove('hidden');
         }
         paneList.firstChild.classList.add('selected');
+        pane.classList.remove('hidden');
         paneFilter.focus()
     }
     function closePane() {
@@ -77,12 +77,11 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
     }
 
     function initializePane() {
-        let opName, opFn;
-        for ([opName, opFn] of operations) {
+        for (const operation of operations) {
             let item = document.createElement('div');
-            item.innerText = opName;
             item.classList.add('item');
-            item.opFn = opFn;
+            item.innerText = operation[0];
+            item.opFn = operation[1];
             item.addEventListener('click', function () {
                 closePane();
                 runOperation(this.opFn);
@@ -113,16 +112,14 @@ document.addEventListener("DOMContentLoaded", function domLoaded(event) {
 
         if (event.key == "ArrowDown") {
             event.preventDefault();
-            const toSelect = next;
             selected.classList.remove('selected');
-            toSelect.classList.add('selected');
-            toSelect.scrollIntoView(false);
+            next.classList.add('selected');
+            next.scrollIntoView(false);
         } else if (event.key == "ArrowUp") {
             event.preventDefault();
-            const toSelect = previous;
             selected.classList.remove('selected');
-            toSelect.classList.add('selected');
-            toSelect.scrollIntoView(false);
+            previous.classList.add('selected');
+            previous.scrollIntoView(false);
         } else if (event.key == "Enter") {
             event.preventDefault();
             paneFilter.value = '';

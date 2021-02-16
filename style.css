@@ -23,7 +23,8 @@ html, body {
     box-sizing: border-box;
 }
 
-#pane {
+.palette {
+    box-sizing: border-box;
     z-index: 100;
     padding: 10px;
 
@@ -34,26 +35,26 @@ html, body {
     height: 300px;
 }
 
-#pane-filter {
-    width: 300px;
+.palette > input {
+    box-sizing: border-box;
+    width: 100%;
     margin: 0;
     padding: 10px;
-    box-sizing: border-box;
 
     font-size: 14pt;
 }
 
 
-#pane-list {
-    height: 300px;
-    overflow: scroll;
+.palette-list {
+    overflow: auto;
+    max-height: 50vh;
 }
 
 
-#pane-list .item {
+.palette-list .item {
+    box-sizing: border-box;
     width: 100%;
     height: 50px;
-    line-height: 50px;
 
     color: white;
     border: 3px solid #113645;
@@ -63,7 +64,7 @@ html, body {
     cursor: pointer;
 }
 
-#pane-list .item.selected {
+.palette-list .item.selected {
     border: 3px solid rgb(38, 117, 150);
     background-color: rgb(55, 95, 128);
 }
