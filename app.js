@@ -18,6 +18,12 @@ const operations = [
     }],
     ['URI Encode', encodeURIComponent],
     ['URI Decode', decodeURIComponent],
+    ['Base 10 -> 16 (hex)', function base10to16(input) {
+        return parseInt(input, 10).toString(16);
+    }],
+    ['Base 16 (hex) -> 10', function base10to16(input) {
+        return parseInt(input, 16).toString(10);
+    }],
 ];
 
 document.addEventListener("DOMContentLoaded", function domLoaded(event) {
