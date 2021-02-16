@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function domLoaded() {
     function textareaKeydownListener(event) {
         if (event.key == 'Tab') {
             event.preventDefault();
-            if (!event.event.shiftKey)
+            if (!event.shiftKey)
                 document.execCommand("insertText", false, '    ');
         }
         if (event.key == 'p' && event.ctrlKey) {
