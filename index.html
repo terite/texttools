@@ -8,12 +8,16 @@
 <body>
     <textarea id="content">
 Press CTRL+P to open the command palette
-    </textarea>
+
+Commands will modify the whole document if no text is selected
+
+Enjoy!</textarea>
     <div id="pane" class="hidden palette">
         <input id="pane-filter">
         <div id="pane-list" class="palette-list"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.7/sjcl.min.js"></script>
-    <script src="app.js"></script>
+    <script src="js/sha1.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

@@ -12,6 +12,10 @@ const operations = [
     ['Format JSON', function formatJSON(input) {
         return JSON.stringify(JSON.parse(input), null, 4);
     }],
+    ['SHA1', function (input) {
+        let bits = sjcl.hash.sha1.hash(input);
+        return sjcl.codec.hex.fromBits(bits);
+    }],
     ['SHA256', function (input) {
         let bits = sjcl.hash.sha256.hash(input);
         return sjcl.codec.hex.fromBits(bits);
@@ -63,16 +67,19 @@ document.addEventListener("DOMContentLoaded", function domLoaded() {
         textarea.focus()
     }
 
-    function ctrlPListener(event) {
-        if (event.key != 'p' || !event.ctrlKey) {
-            return;
+    function textareaKeydownListener(event) {
+        if (event.key == 'Tab') {
+            event.preventDefault();
+            if (!event.event.shiftKey)
+                document.execCommand("insertText", false, '    ');
         }
-        event.preventDefault();
-
-        if (pane.classList.contains('hidden')) {
-            openPane();
-        } else {
-            closePane();
+        if (event.key == 'p' && event.ctrlKey) {
+            event.preventDefault();
+            if (pane.classList.contains('hidden')) {
+                openPane();
+            } else {
+                closePane();
+            }
         }
     }
 
@@ -150,7 +157,8 @@ document.addEventListener("DOMContentLoaded", function domLoaded() {
         }
     }
 
-    textarea.addEventListener('keydown', ctrlPListener);
+    textarea.addEventListener('keydown', textareaKeydownListener);
+
     document.body.addEventListener('keydown', paneKeyListener);
     paneFilter.addEventListener('input', paneFilterHandler);
     initializePane();
